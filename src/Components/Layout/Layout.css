@@ -8,6 +8,8 @@ header.header__navigation {
     left: 0;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 100%;
+    z-index: 1;
+    background-color: white;
 }
 
 article.body__article {

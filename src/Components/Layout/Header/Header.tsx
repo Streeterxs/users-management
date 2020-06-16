@@ -10,9 +10,6 @@ const Header = () => {
     const [activeItem, setActiveItem] = useState('home');
     const {coreReducer} = useSelector((state: RootState) => state);
     const history = useHistory();
-
-    console.log('token: ', coreReducer.token);
-    console.log('isLogged', coreReducer.isLogged);
     const dispatch = useDispatch();
 
     const handleItemClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, { name }: MenuItemProps) => setActiveItem(name ? name : '');
@@ -36,7 +33,10 @@ const Header = () => {
                 <Menu.Item
                     name='User Creation'
                     active={activeItem === 'User Creation'}
-                    onClick={handleItemClick}
+                    onClick={(e, obj) => {
+                        history.push('/create');
+                        handleItemClick(e, obj);
+                    }}
                 />
                 <Menu.Item
                     name='friends'
