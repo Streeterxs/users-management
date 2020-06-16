@@ -12,30 +12,32 @@ type CoreReducerState = {
     
 }
 
-const INITIAL_STATE: CoreReducerState = {
-    token: localStorage.getItem('authToken'),
-    get isLogged() {
-        return !!this.token;
+const INITIAL_STATE: CoreReducerState = (() => {
+    const actualToken = localStorage.getItem('authToken');
+    return {
+        token:actualToken,
+        isLogged: !!actualToken
     }
-};
+})();
 
 export function coreReducer(state = INITIAL_STATE, action: CoreActions) {
     switch (action.type) {
         case coreActionsType.LOGIN:
+            console.log(config.PRIVATE_KEY);
             const token = jwt.sign(action.credentials as Credentials, config.PRIVATE_KEY as jwt.Secret);
             localStorage.setItem('authToken', token);
 
             return {
-                ...state,
-                token
+                token,
+                isLogged: true
             };
 
         case coreActionsType.LOGOUT:
             localStorage.removeItem('authToken');
 
             return {
-                ...state,
-                token: null
+                token: null,
+                isLogged: false
             };
     
         default:

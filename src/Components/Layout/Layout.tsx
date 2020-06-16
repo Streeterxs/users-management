@@ -12,7 +12,7 @@ const Layout = ({children}: LayoutProps) => {
             <header className="header__navigation">
                 <Header/>
             </header>
-            <article>
+            <article className="body__article">
                 {children}
             </article>
         </div>

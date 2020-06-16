@@ -13,7 +13,7 @@ export function login(credentials: Credentials) {
     }
 }
 
-export function logout(productSku: string) {
+export function logout() {
     return {
         type: coreActionsType.LOGOUT
     }
