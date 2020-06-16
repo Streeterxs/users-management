@@ -1,7 +1,5 @@
 import React, { SyntheticEvent, useState } from 'react';
 import { Form, Input, Button } from 'semantic-ui-react';
-import { Endereco } from '../UserCreation';
-
 
 enum UserFormKeys {
     nome="nome",
@@ -39,14 +37,6 @@ type UserFormValidation = {
 };
 
 type UserFormProps = {
-    emailChange: (email: string) => void,
-    nomeChange: (nome: string) => void,
-    cpfChange: (cpf: string) => void,
-    cepChange: (cep: string) => void,
-    ruaChange: (rua: string) => void,
-    numeroChange: (numero: number) => void,
-    bairroChange: (bairro: string) => void,
-    cidadeChange: (cidade: string) => void,
     formSubmit: (form: UserForm) => void
 };
 const UserForm = (userFormProps: UserFormProps) => {
@@ -74,7 +64,6 @@ const UserForm = (userFormProps: UserFormProps) => {
     });
 
     const handleFormInput = <T,>(value: T, key: UserFormKeys, aditionalLogics?: boolean[]) => {
-        const keyOfUserFormProps = `${key}Change` as keyof UserFormProps;
         const keyOfForValidation = `${key}IsValid` as keyof UserFormValidation;
         const adicionalLogicsReduced = aditionalLogics ?
             aditionalLogics.reduce((acc, curr) => {
@@ -91,8 +80,6 @@ const UserForm = (userFormProps: UserFormProps) => {
             }
             return;
         }
-
-        (userFormProps[keyOfUserFormProps] as any)(value);
 
         if (!formValidation[keyOfForValidation]) {
             setFormValidation({...formValidation, [keyOfForValidation]: true});

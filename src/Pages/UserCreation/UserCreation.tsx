@@ -2,32 +2,39 @@ import React from 'react';
 import { UserForm } from './Components';
 
 import './userCreation.css'
-
-export interface Endereco {
-    cep: string;
-    rua: string;
-    numero: number;
-    bairro: string;
-    cidade: string;
-};
+import { Endereco } from '../../Store/Users/Address';
+import { Usuario } from '../../Store/Users/User';
+import { useDispatch } from 'react-redux';
+import { create } from '../../Store/Users/Actions/userActions';
 
 const UserCreation = () => {
+    const dispatch = useDispatch();
+
     const handleFormSubmit = (userForm: UserForm) => {
-        alert('usuário criado!');
+        const endereco: Endereco = {
+            cep: userForm.cep,
+            rua: userForm.rua,
+            numero: userForm.numero,
+            bairro: userForm.bairro,
+            cidade: userForm.cidade
+        };
+
+        const usuario: Usuario = {
+            nome: userForm.nome,
+            cpf: userForm.cpf,
+            email: userForm.email,
+            endereco
+        };
+
+        (async () => {
+            await dispatch(create(usuario))
+        })();
     };
 
     return (
         <div className="creation__wrapper">
             <div className="display-flex height-70 width-100 justify-center align-center">
                 <UserForm
-                    emailChange={console.log}
-                    nomeChange={console.log}
-                    cpfChange={console.log}
-                    cepChange={console.log}
-                    ruaChange={console.log}
-                    numeroChange={console.log}
-                    bairroChange={console.log}
-                    cidadeChange={console.log}
                     formSubmit={handleFormSubmit}
                 />
             </div>
