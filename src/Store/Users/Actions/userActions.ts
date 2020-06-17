@@ -5,7 +5,8 @@ import { postUser, getUsers } from "../../../Services";
 export type UserActions = {
     type: userActionTypes,
     user?: Usuario,
-    users?: Usuario[]
+    users?: Usuario[],
+    textFullSearch?: string
 };
 
 export async function createUser(user: Usuario) {
@@ -34,7 +35,17 @@ export async function fullTextSearchUsers(text: string) {
     const usersReturn = await getUsers(text);
 
     return {
-        type: userActionTypes.GET_USERS,
+        type: userActionTypes.SEARCH_USERS,
         users: usersReturn
+    }
+}
+
+export function optmisticSearch(text: string) {
+
+    console.log('text action: ', typeof text);
+
+    return {
+        type: userActionTypes.OPTMISTIC_SEARCH_USERS,
+        textFullSearch: text
     }
 }

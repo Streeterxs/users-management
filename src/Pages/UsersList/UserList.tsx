@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import { UserTable } from './Components';
 import { RootState } from '../../Store/Store';
-import { fetchUsers, fullTextSearchUsers } from '../../Store/Users';
+import { fetchUsers, fullTextSearchUsers, optmisticSearch } from '../../Store/Users';
 
 let timing: NodeJS.Timeout | null = null;
 
@@ -23,7 +23,7 @@ const UserList = () => {
     }, []);
 
     const handleSearchChange = (text: string, delay: number) => {
-
+        dispatch(optmisticSearch(text))
         if (!timing) {
             timing = setTimeout(() => {
                 console.log('teste: ', text);
@@ -43,7 +43,7 @@ const UserList = () => {
         <div>
             <UserTable
                 addUserClick={() => history.push('/create')}
-                userList={usersReducer.userList ? usersReducer.userList : []}
+                userList={usersReducer.filteredUserList ? usersReducer.filteredUserList : []}
                 onSearchChange={(text) => handleSearchChange(text, 600)}/>
         </div>
     );
