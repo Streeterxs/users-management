@@ -1,36 +1,51 @@
 import { Usuario } from "../User";
 import { userActionTypes } from "./userActionTypes";
-import { postUser, getUsers } from "../../../Services";
+import { postUser, getUsers, updateUser } from "../../../Services";
 
 export type UserActions = {
     type: userActionTypes,
     user?: Usuario,
     users?: Usuario[],
-    textFullSearch?: string
+    textFullSearch?: string,
+    userId?: number
 };
 
-export async function createUser(user: Usuario) {
+export async function createUser(user: Usuario): Promise<UserActions> {
 
     const userReturn = await postUser(user);
-
-    console.log('userReturn: ', userReturn);
     return {
         type: userActionTypes.USER_CREATION,
         user
     }
 }
 
-export async function fetchUsers() {
+export async function updateUserAction(user: Usuario): Promise<UserActions> {
+
+    const userReturn = await updateUser(user);
+    return {
+        type: userActionTypes.USER_UPDATE,
+        user: userReturn
+    }
+}
+
+export function optimisticUpdateUserAction(user: Usuario): UserActions {
+
+    return {
+        type: userActionTypes.USER_UPDATE,
+        user
+    }
+}
+
+export async function fetchUsers(): Promise<UserActions> {
 
     const usersReturn = await getUsers();
-    console.log('usersReturn: ', usersReturn);
     return {
         type: userActionTypes.GET_USERS,
         users: usersReturn
     }
 }
 
-export async function fullTextSearchUsers(text: string) {
+export async function fullTextSearchUsers(text: string): Promise<UserActions> {
 
     const usersReturn = await getUsers(text);
 
@@ -40,12 +55,20 @@ export async function fullTextSearchUsers(text: string) {
     }
 }
 
-export function optmisticSearch(text: string) {
+export function optmisticSearch(text: string): UserActions {
 
     console.log('text action: ', typeof text);
 
     return {
         type: userActionTypes.OPTMISTIC_SEARCH_USERS,
         textFullSearch: text
+    }
+}
+
+export function findUser(userId: number): UserActions {
+
+    return {
+        type: userActionTypes.GET_USER,
+        userId
     }
 }

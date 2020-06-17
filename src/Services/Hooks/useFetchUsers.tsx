@@ -8,7 +8,6 @@ const useFetchUsers = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log('teste');
         (async () => await dispatch(await fetchUsers()))();
     }, []);
 };

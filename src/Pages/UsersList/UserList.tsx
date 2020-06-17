@@ -14,19 +14,13 @@ const UserList = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log('use effect!!!!!!', usersReducer.userList);
         if (!usersReducer.userList) (async () => await dispatch(await fetchUsers()))();
-
-        return () => {
-            console.log('unmount')
-        }
     }, []);
 
     const handleSearchChange = (text: string, delay: number) => {
         dispatch(optmisticSearch(text))
         if (!timing) {
             timing = setTimeout(() => {
-                console.log('teste: ', text);
                 (async () => await dispatch(await fullTextSearchUsers(text)))();
             }, delay);
             return;
@@ -34,7 +28,6 @@ const UserList = () => {
 
         clearInterval(timing);
         timing = setTimeout(() => {
-            console.log('teste: ', text);
             (async () => await dispatch(await fullTextSearchUsers(text)))();
         }, delay);
     }
@@ -43,6 +36,7 @@ const UserList = () => {
         <div>
             <UserTable
                 addUserClick={() => history.push('/create')}
+                onDetailsClick={(userId) => history.push(`/edit/${userId}`)}
                 userList={usersReducer.filteredUserList ? usersReducer.filteredUserList : []}
                 onSearchChange={(text) => handleSearchChange(text, 600)}/>
         </div>

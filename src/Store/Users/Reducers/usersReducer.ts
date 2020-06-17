@@ -4,17 +4,20 @@ import { UserActions } from "../Actions/userActions";
 import { Endereco } from "../Address";
 
 type UserReducerState = {
-    userList: Usuario[] | null,
-    filteredUserList: Usuario[] | null
-    userEdit?: Usuario,
+    userList: Usuario[] | undefined;
+    filteredUserList: Usuario[] | undefined;
+    userEdit: Usuario | undefined;
 }
 
 const INITIAL_STATE: UserReducerState = {
-    userList: null,
-    filteredUserList: null
+    userList: undefined,
+    filteredUserList: undefined,
+    userEdit: undefined
 };
 
 export function usersReducer(state: UserReducerState = INITIAL_STATE, action: UserActions) {
+    let index: number;
+    let findedUser;
     switch (action.type) {
         case userActionTypes.USER_CREATION:
             
@@ -24,12 +27,50 @@ export function usersReducer(state: UserReducerState = INITIAL_STATE, action: Us
                 filteredUserList: [action.user].concat(state.userList ? state.userList : []) as Usuario[]
             };
 
+        case userActionTypes.USER_UPDATE:
+            index = state.userList ? state.userList.findIndex(user => user.id === action.user?.id) : -1;
+
+            if (index >= 0 && !!state.userList && !!action.user) {
+                const userListCopy = state.userList;
+                userListCopy[index] = action.user;
+
+                return {
+                    ...state,
+                    userList: userListCopy,
+                    filteredUserList: userListCopy,
+                    userEdit: action.user
+                };
+            }
+            
+            return {
+                ...state
+            };
+
         case userActionTypes.GET_USERS:
             return {
                 ...state,
                 userList: action.users as Usuario[],
                 filteredUserList: action.users as Usuario[]
             };
+        
+
+        case userActionTypes.GET_USER:
+            index = state.userList ? state.userList.findIndex(user => user.id === action.userId) : -1;
+
+            console.log('index: ', index);
+
+            if (index >= 0 && state.userList) {
+                findedUser =  state.userList[index];
+                console.log('findedUser: ', findedUser);
+                return {
+                    ...state,
+                    userEdit: findedUser
+                };
+            }
+            
+            return {
+                ...state
+            }
 
         case userActionTypes.SEARCH_USERS:
             return {

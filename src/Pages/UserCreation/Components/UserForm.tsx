@@ -1,5 +1,6 @@
 import React, { SyntheticEvent, useState, useEffect } from 'react';
 import { Form, Input, Button } from 'semantic-ui-react';
+import { Usuario } from '../../../Store/Users';
 
 enum UserFormKeys {
     nome="nome",
@@ -14,6 +15,7 @@ enum UserFormKeys {
 }
 
 type UserForm = {
+    id?: number | undefined;
     nome: string;
     cpf: string;
     email: string;
@@ -37,11 +39,13 @@ type UserFormValidation = {
 };
 
 type UserFormProps = {
-    formSubmit: (form: UserForm) => void
+    formSubmit: (form: UserForm) => void,
+    userToEdit?: Usuario
 };
 
 
 const formObj: UserForm = {
+    id: undefined,
     nome: '',
     email: '',
     cpf: '',
@@ -100,8 +104,6 @@ const UserForm = (userFormProps: UserFormProps) => {
             return acc && (formValidation[formValKey] as any);
         }, true);
 
-        console.log('formIsValid: ', formIsValid);
-
         if (!formIsValid) {
             setFormValidation({...formValidation, showErrors: true});
             return;
@@ -111,15 +113,42 @@ const UserForm = (userFormProps: UserFormProps) => {
     }
 
     useEffect(() => {
-        console.log('use effect user form!!!');
-    }, []);
+        if (userFormProps.userToEdit) {
+            formObj.id = userFormProps.userToEdit.id;
+            formObj.nome = userFormProps.userToEdit.nome;
+            formObj.email = userFormProps.userToEdit.email;
+            formObj.cpf = userFormProps.userToEdit.cpf;
+            formObj.cep = userFormProps.userToEdit.endereco.cep;
+            formObj.rua = userFormProps.userToEdit.endereco.rua;
+            formObj.numero = userFormProps.userToEdit.endereco.numero;
+            formObj.bairro = userFormProps.userToEdit.endereco.bairro;
+            formObj.cidade = userFormProps.userToEdit.endereco.cidade;
+
+            setFormValidation({
+                emailIsValid: true,
+                cpfIsValid: true,
+                nomeIsValid: true,
+                cepIsValid: true,
+                ruaIsValid: true,
+                numeroIsValid: true,
+                bairroIsValid: true,
+                cidadeIsValid: true,
+                showErrors: false
+            })
+        }
+    }, [userFormProps.userToEdit]);
 
     return (
         <Form onSubmit={(event) => handleFormSubmit(event)}>
             <Form.Field
-                onChange={(event: SyntheticEvent<HTMLInputElement>, {value}: any) => handleFormInput<string>(value, UserFormKeys.nome)} 
+                onChange={function (event: SyntheticEvent<HTMLInputElement>, {value}: any) {
+                    event.preventDefault();
+                    handleFormInput<string>(value, UserFormKeys.nome)
+                }} 
                 label="nome"
+                name="nome"
                 control={Input}
+                defaultValue={userFormProps?.userToEdit?.nome}
                 placeholder="Ex.: Joe Dohan"
                 error={!formValidation.nomeIsValid && formValidation.showErrors ? {
                     content: 'Nome inválido',
@@ -130,7 +159,9 @@ const UserForm = (userFormProps: UserFormProps) => {
             <Form.Field
                 onChange={(event: SyntheticEvent<HTMLInputElement>, {value}: any) => handleFormInput<string>(value, UserFormKeys.email, [(value as string).includes('@')])} 
                 label="email"
+                name="email"
                 control={Input}
+                defaultValue={userFormProps?.userToEdit?.email}
                 placeholder="Ex.: joe.dohan@gmail.com"
                 error={!formValidation.emailIsValid && formValidation.showErrors ? {
                     content: 'E-mail inválido',
@@ -140,8 +171,10 @@ const UserForm = (userFormProps: UserFormProps) => {
             />
             <Form.Field
                 label="cpf"
+                name="cpf"
                 onChange={(event: SyntheticEvent<HTMLInputElement>, {value}: any) => handleFormInput<string>(value, UserFormKeys.cpf)}
                 control={Input}
+                defaultValue={userFormProps?.userToEdit?.cpf}
                 error={!formValidation.cpfIsValid && formValidation.showErrors ? {
                     content: 'CPF inválido',
                     pointing: 'below',
@@ -155,7 +188,9 @@ const UserForm = (userFormProps: UserFormProps) => {
                     id='form-input-control-first-name'
                     onChange={(event: SyntheticEvent<HTMLInputElement>, {value}: any) => handleFormInput<string>(value, UserFormKeys.cep)}
                     control={Input}
+                    defaultValue={userFormProps?.userToEdit?.endereco.cep}
                     label='CEP'
+                    name="CEP"
                     error={!formValidation.cepIsValid && formValidation.showErrors ? {
                         content: 'CEP inválido',
                         pointing: 'below',
@@ -166,7 +201,9 @@ const UserForm = (userFormProps: UserFormProps) => {
                     id='form-input-control-last-name'
                     onChange={(event: SyntheticEvent<HTMLInputElement>, {value}: any) => handleFormInput<string>(value, UserFormKeys.rua)}
                     control={Input}
+                    defaultValue={userFormProps?.userToEdit?.endereco.rua}
                     label='rua'
+                    name="rua"
                     error={!formValidation.ruaIsValid && formValidation.showErrors ? {
                         content: 'Rua inválida',
                         pointing: 'below',
@@ -176,8 +213,10 @@ const UserForm = (userFormProps: UserFormProps) => {
                 <Form.Field
                     id='form-input-control-last-name'
                     control={Input}
+                    defaultValue={userFormProps?.userToEdit?.endereco.numero}
                     onChange={(event: SyntheticEvent<HTMLInputElement>, {value}: any) => handleFormInput<number>(value, UserFormKeys.numero)}
                     label='número'
+                    name="numero"
                     error={!formValidation.numeroIsValid && formValidation.showErrors ? {
                         content: 'Número inválido',
                         pointing: 'below',
@@ -189,22 +228,26 @@ const UserForm = (userFormProps: UserFormProps) => {
                     id='form-input-control-last-name'
                     onChange={(event: SyntheticEvent<HTMLInputElement>, {value}: any) => handleFormInput<string>(value, UserFormKeys.bairro)}
                     control={Input}
+                    defaultValue={userFormProps?.userToEdit?.endereco.bairro}
                     error={!formValidation.bairroIsValid && formValidation.showErrors ? {
                         content: 'Bairro inválido',
                         pointing: 'below',
                     }: null}
                     label='bairro'
+                    name="bairro"
                     required
                 />
                 <Form.Field
                     id='form-input-control-last-name'
                     onChange={(event: SyntheticEvent<HTMLInputElement>, {value}: any) => handleFormInput<string>(value, UserFormKeys.cidade)}
                     control={Input}
+                    defaultValue={userFormProps?.userToEdit?.endereco.cidade}
                     error={!formValidation.cidadeIsValid && formValidation.showErrors ? {
                         content: 'Cidade inválido',
                         pointing: 'below',
                     }: null}
                     label='cidade'
+                    name="cidade"
                     required
                 />
             </Form.Group>

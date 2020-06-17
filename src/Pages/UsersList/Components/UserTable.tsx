@@ -5,9 +5,10 @@ import { Usuario } from '../../../Store/Users/User';
 export type UserTableProps = {
     userList: Usuario[],
     addUserClick: () => void,
-    onSearchChange: (searchText: string) => void
+    onSearchChange: (searchText: string) => void,
+    onDetailsClick: (userId: number) => void
 }
-const UserTable = ({userList, addUserClick, onSearchChange}: UserTableProps) => {
+const UserTable = ({userList, addUserClick, onSearchChange, onDetailsClick}: UserTableProps) => {
     return (
         <Table compact celled definition>
           <Table.Header>
@@ -26,7 +27,15 @@ const UserTable = ({userList, addUserClick, onSearchChange}: UserTableProps) => 
                     return (
                     <Table.Row key={user.id}>
                         <Table.Cell collapsing>
-                        <Checkbox slider />
+                          <Button
+                            icon="search"
+                            primary
+                            circular
+                            size='small'
+                            onClick={() => {
+                              onDetailsClick(user.id ? user.id : 0)
+                            }}
+                          />
                         </Table.Cell>
                         <Table.Cell>{user?.nome}</Table.Cell>
                         <Table.Cell>{user?.cpf}</Table.Cell>

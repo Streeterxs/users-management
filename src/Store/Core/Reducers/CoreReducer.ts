@@ -23,7 +23,6 @@ const INITIAL_STATE: CoreReducerState = (() => {
 export function coreReducer(state = INITIAL_STATE, action: CoreActions) {
     switch (action.type) {
         case coreActionsType.LOGIN:
-            console.log(config.PRIVATE_KEY);
             const token = jwt.sign(action.credentials as Credentials, config.PRIVATE_KEY as jwt.Secret);
             localStorage.setItem('authToken', token);
 
