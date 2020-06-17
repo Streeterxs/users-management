@@ -11,7 +11,6 @@ export type UserActions = {
 export async function createUser(user: Usuario) {
 
     const userReturn = await postUser(user);
-    alert('user created action!');
 
     console.log('userReturn: ', userReturn);
     return {
@@ -23,9 +22,17 @@ export async function createUser(user: Usuario) {
 export async function fetchUsers() {
 
     const usersReturn = await getUsers();
-    alert('users getted action!');
-
     console.log('usersReturn: ', usersReturn);
+    return {
+        type: userActionTypes.GET_USERS,
+        users: usersReturn
+    }
+}
+
+export async function fullTextSearchUsers(text: string) {
+
+    const usersReturn = await getUsers(text);
+
     return {
         type: userActionTypes.GET_USERS,
         users: usersReturn

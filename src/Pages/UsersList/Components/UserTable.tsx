@@ -1,12 +1,13 @@
 import React from 'react';
-import { Table, Button, Icon, Checkbox } from 'semantic-ui-react';
+import { Table, Button, Icon, Checkbox, Input } from 'semantic-ui-react';
 import { Usuario } from '../../../Store/Users/User';
 
 export type UserTableProps = {
     userList: Usuario[],
-    addUserClick: () => void
+    addUserClick: () => void,
+    onSearchChange: (searchText: string) => void
 }
-const UserTable = ({userList, addUserClick}: UserTableProps) => {
+const UserTable = ({userList, addUserClick, onSearchChange}: UserTableProps) => {
     return (
         <Table compact celled definition>
           <Table.Header>
@@ -51,10 +52,7 @@ const UserTable = ({userList, addUserClick}: UserTableProps) => {
                 >
                   <Icon name='user' /> Adicionar Usuário
                 </Button>
-                <Button size='small'>Approve</Button>
-                <Button disabled size='small'>
-                  Approve All
-                </Button>
+                Buscar: <Input onChange={(e, {value}) => onSearchChange(value)} type="test" placeholder="Ex.: Joe Dohan" size='small'/>
               </Table.HeaderCell>
             </Table.Row>
           </Table.Footer>
