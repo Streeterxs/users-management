@@ -3,12 +3,12 @@ import { Usuario } from "../User";
 import { UserActions } from "../Actions/userActions";
 
 type UserReducerState = {
-    userList: Usuario[],
+    userList: Usuario[] | null,
     userEdit?: Usuario
 }
 
 const INITIAL_STATE: UserReducerState = {
-    userList: []
+    userList: null
 };
 
 export function usersReducer(state = INITIAL_STATE, action: UserActions) {
@@ -16,7 +16,13 @@ export function usersReducer(state = INITIAL_STATE, action: UserActions) {
         case userActionTypes.USER_CREATION:
             
             return {
-                userList: [action.user].concat(state.userList) as Usuario[]
+                userList: [action.user].concat(state.userList ? state.userList : []) as Usuario[]
+            };
+
+        case userActionTypes.GET_USERS:
+            return {
+                ...state,
+                userList: action.users as Usuario[]
             };
     
         default:

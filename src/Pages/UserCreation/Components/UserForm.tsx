@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from 'react';
+import React, { SyntheticEvent, useState, useEffect } from 'react';
 import { Form, Input, Button } from 'semantic-ui-react';
 
 enum UserFormKeys {
@@ -39,17 +39,20 @@ type UserFormValidation = {
 type UserFormProps = {
     formSubmit: (form: UserForm) => void
 };
+
+
+const formObj: UserForm = {
+    nome: '',
+    email: '',
+    cpf: '',
+    cep: '',
+    rua: '',
+    numero: 0,
+    bairro: '',
+    cidade: ''
+};
+
 const UserForm = (userFormProps: UserFormProps) => {
-    const formObj: UserForm = {
-        nome: '',
-        email: '',
-        cpf: '',
-        cep: '',
-        rua: '',
-        numero: 0,
-        bairro: '',
-        cidade: ''
-    }
 
     const [formValidation, setFormValidation] = useState<UserFormValidation>({
         emailIsValid: false,
@@ -85,7 +88,7 @@ const UserForm = (userFormProps: UserFormProps) => {
             setFormValidation({...formValidation, [keyOfForValidation]: true});
         }
 
-        const formobjkey = `${key}` as keyof UserForm
+        const formobjkey = `${key}` as keyof UserForm;
         (formObj[formobjkey] as any) = value;
     };
 
@@ -106,6 +109,10 @@ const UserForm = (userFormProps: UserFormProps) => {
 
         userFormProps.formSubmit(formObj);
     }
+
+    useEffect(() => {
+        console.log('use effect user form!!!');
+    }, []);
 
     return (
         <Form onSubmit={(event) => handleFormSubmit(event)}>

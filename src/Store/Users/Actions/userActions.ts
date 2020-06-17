@@ -1,10 +1,11 @@
 import { Usuario } from "../User";
 import { userActionTypes } from "./userActionTypes";
-import { postUser } from "../../../Services";
+import { postUser, getUsers } from "../../../Services";
 
 export type UserActions = {
     type: userActionTypes,
-    user?: Usuario
+    user?: Usuario,
+    users?: Usuario[]
 };
 
 export async function createUser(user: Usuario) {
@@ -16,5 +17,17 @@ export async function createUser(user: Usuario) {
     return {
         type: userActionTypes.USER_CREATION,
         user
+    }
+}
+
+export async function fetchUsers() {
+
+    const usersReturn = await getUsers();
+    alert('users getted action!');
+
+    console.log('usersReturn: ', usersReturn);
+    return {
+        type: userActionTypes.GET_USERS,
+        users: usersReturn
     }
 }

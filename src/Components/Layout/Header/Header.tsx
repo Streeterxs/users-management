@@ -30,14 +30,6 @@ const Header = () => {
         <nav className="padx-2">
             <Menu text size="small">
                 <Menu.Item header onClick={() => history.push('/')}>User Manager</Menu.Item>
-                <Menu.Item
-                    name='User Creation'
-                    active={activeItem === 'User Creation'}
-                    onClick={(e, obj) => {
-                        history.push('/create');
-                        handleItemClick(e, obj);
-                    }}
-                />
                 <Menu.Menu position='right'>
                     <Menu.Item
                         name={coreReducer?.isLogged ? 'logout' : 'login'}

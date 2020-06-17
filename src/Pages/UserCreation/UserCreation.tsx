@@ -11,6 +11,7 @@ const UserCreation = () => {
     const dispatch = useDispatch();
 
     const handleFormSubmit = (userForm: UserForm) => {
+        console.log('userForm: ', userForm);
         const endereco: Endereco = {
             cep: userForm.cep,
             rua: userForm.rua,

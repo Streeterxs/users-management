@@ -3,9 +3,10 @@ import { Table, Button, Icon, Checkbox } from 'semantic-ui-react';
 import { Usuario } from '../../../Store/Users/User';
 
 export type UserTableProps = {
-    userList: Usuario[]
+    userList: Usuario[],
+    addUserClick: () => void
 }
-const UserTable = ({userList}: UserTableProps) => {
+const UserTable = ({userList, addUserClick}: UserTableProps) => {
     return (
         <Table compact celled definition>
           <Table.Header>
@@ -22,7 +23,7 @@ const UserTable = ({userList}: UserTableProps) => {
               {
                 userList.map((user) => {
                     return (
-                    <Table.Row>
+                    <Table.Row key={user.id}>
                         <Table.Cell collapsing>
                         <Checkbox slider />
                         </Table.Cell>
@@ -46,8 +47,9 @@ const UserTable = ({userList}: UserTableProps) => {
                   labelPosition='left'
                   primary
                   size='small'
+                  onClick={addUserClick}
                 >
-                  <Icon name='user' /> Add User
+                  <Icon name='user' /> Adicionar Usuário
                 </Button>
                 <Button size='small'>Approve</Button>
                 <Button disabled size='small'>
