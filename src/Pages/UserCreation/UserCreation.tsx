@@ -5,7 +5,7 @@ import './userCreation.css'
 import { Endereco } from '../../Store/Users/Address';
 import { Usuario } from '../../Store/Users/User';
 import { useDispatch } from 'react-redux';
-import { create } from '../../Store/Users/Actions/userActions';
+import { createUser } from '../../Store/Users/Actions/userActions';
 
 const UserCreation = () => {
     const dispatch = useDispatch();
@@ -27,7 +27,7 @@ const UserCreation = () => {
         };
 
         (async () => {
-            await dispatch(create(usuario))
+            await dispatch(await createUser(usuario))
         })();
     };
 

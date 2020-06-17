@@ -1,1 +1,1 @@
-export{coreReducer as coreReducer} from './CoreReducer';
+export {coreReducer} from './CoreReducer';

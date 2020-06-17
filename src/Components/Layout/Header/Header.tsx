@@ -29,7 +29,7 @@ const Header = () => {
     return (
         <nav className="padx-2">
             <Menu text size="small">
-                <Menu.Item header onClick={console.log}>User Manager</Menu.Item>
+                <Menu.Item header onClick={() => history.push('/')}>User Manager</Menu.Item>
                 <Menu.Item
                     name='User Creation'
                     active={activeItem === 'User Creation'}
@@ -38,16 +38,7 @@ const Header = () => {
                         handleItemClick(e, obj);
                     }}
                 />
-                <Menu.Item
-                    name='friends'
-                    active={activeItem === 'friends'}
-                    onClick={handleItemClick}
-                />
                 <Menu.Menu position='right'>
-                    <Menu.Item
-                        name={coreReducer?.isLogged ? 'logado' : 'deslogado'}
-                        onClick={handleItemClick}
-                        />
                     <Menu.Item
                         name={coreReducer?.isLogged ? 'logout' : 'login'}
                         onClick={handleAuth}

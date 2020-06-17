@@ -1,4 +1,4 @@
-import React, { useState, useCallback, SyntheticEvent } from 'react';
+import React, { useState, SyntheticEvent } from 'react';
 import { Form, Button, Input } from 'semantic-ui-react';
 
 export type LoginFormProps = {

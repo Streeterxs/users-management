@@ -5,7 +5,6 @@ import { UserActions } from "../Actions/userActions";
 type UserReducerState = {
     userList: Usuario[],
     userEdit?: Usuario
-    
 }
 
 const INITIAL_STATE: UserReducerState = {
@@ -17,7 +16,7 @@ export function usersReducer(state = INITIAL_STATE, action: UserActions) {
         case userActionTypes.USER_CREATION:
             
             return {
-                userList: [action.user].concat(state.userList)
+                userList: [action.user].concat(state.userList) as Usuario[]
             };
     
         default:
