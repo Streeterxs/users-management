@@ -57,11 +57,8 @@ export function usersReducer(state: UserReducerState = INITIAL_STATE, action: Us
         case userActionTypes.GET_USER:
             index = state.userList ? state.userList.findIndex(user => user.id === action.userId) : -1;
 
-            console.log('index: ', index);
-
             if (index >= 0 && state.userList) {
                 findedUser =  state.userList[index];
-                console.log('findedUser: ', findedUser);
                 return {
                     ...state,
                     userEdit: findedUser

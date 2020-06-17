@@ -57,8 +57,6 @@ export async function fullTextSearchUsers(text: string): Promise<UserActions> {
 
 export function optmisticSearch(text: string): UserActions {
 
-    console.log('text action: ', typeof text);
-
     return {
         type: userActionTypes.OPTMISTIC_SEARCH_USERS,
         textFullSearch: text
